@@ -1,7 +1,7 @@
 import json
 
 
-# creates the message blocks
+# blocks builder
 def create_blocks(
     job_title: str,
     proposal: str,
@@ -11,112 +11,112 @@ def create_blocks(
     hire_rate: str,
     avg_rate: str,
     apply_url: str,
-) -> list:
+) -> dict:
     return [
-        {
-            "type": "header",
-            "text": {
-                "type": "plain_text",
-                "text": f"📋 Job Proposal: {job_title}",
+            {
+                "type": "header",
+                "text": {
+                    "type": "plain_text",
+                    "text": f"🗂️ Job Proposal: {job_title}",
+                },
             },
-        },
-        {"type": "divider"},
-        # CLIENT INFO
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "*🏢 Client Info:*",
+            {"type": "divider"},
+            # CLIENT INFO
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "*👤 Client Info:*",
+                },
             },
-        },
-        {
-            "type": "section",
-            "fields": [
-                {
-                    "type": "mrkdwn",
-                    "text": f"*📍 Location:*\n{location}",
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": f"*💵 Budget:*\n{budget}",
-                },
-            ],
-        },
-        {
-            "type": "section",
-            "fields": [
-                {
-                    "type": "mrkdwn",
-                    "text": f"*⭐ Client Rating:*\n{client_rating}",
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": f"*✅ Hire Rate:*\n{hire_rate}",
-                },
-            ],
-        },
-        {
-            "type": "section",
-            "fields": [
-                {
-                    "type": "mrkdwn",
-                    "text": f"*📊 Avg Rate:*\n{avg_rate}",
-                },
-            ],
-        },
-        {"type": "divider"},
-        # PROPOSAL
-        {
-            "type": "section",
-            "block_id": "proposal_section",
-            "text": {
-                "type": "mrkdwn",
-                "text": f"*📝 Proposal:*\n{proposal}",
+            {
+                "type": "section",
+                "fields": [
+                    {
+                        "type": "mrkdwn",
+                        "text": f"*🌍 Location:*\n{location}",
+                    },
+                    {
+                        "type": "mrkdwn",
+                        "text": f"*💰 Budget:*\n{budget}",
+                    },
+                ],
             },
-        },
-        {"type": "divider"},
-        # ACTION BUTTONS
-        {
-            "type": "actions",
-            "block_id": "action_buttons",
-            "elements": [
-                {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "✏️ Manual Edit",
+            {
+                "type": "section",
+                "fields": [
+                    {
+                        "type": "mrkdwn",
+                        "text": f"*🌟 Client Rating:*\n{client_rating}",
                     },
-                    "style": "primary",
-                    "action_id": "edit_human",
-                    "value": proposal,
-                },
-                {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "✨ Ai Rewrite",
+                    {
+                        "type": "mrkdwn",
+                        "text": f"*🤝 Hire Rate:*\n{hire_rate}",
                     },
-                    "style": "primary",
-                    "action_id": "edit_ai",
-                    "value": proposal,
-                },
-                {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "🚀 Apply Now",
+                ],
+            },
+            {
+                "type": "section",
+                "fields": [
+                    {
+                        "type": "mrkdwn",
+                        "text": f"*📈 Avg Rate:*\n{avg_rate}",
                     },
-                    "url": apply_url,
-                    "style": "primary",
+                ],
+            },
+            {"type": "divider"},
+            # PROPOSAL
+            {
+                "type": "section",
+                "block_id": "proposal_section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": f"*✍️ Proposal:*\n{proposal}",
                 },
-            ],
-        },
+            },
+            {"type": "divider"},
+            # ACTION BUTTONS
+            {
+                "type": "actions",
+                "block_id": "action_buttons",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "✏️ Manual Edit",
+                        },
+                        "style": "primary",
+                        "action_id": "edit_human",
+                        "value": proposal,
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "🤖 AI Rewrite",
+                        },
+                        "style": "primary",
+                        "action_id": "edit_ai",
+                        "value": proposal,
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "🚀 Apply Now",
+                        },
+                        "url": apply_url,
+                        "style": "primary",
+                    },
+                ],
+            },
     ]
-
+    
 
 # creates the manual edit view
 def create_manual_edit_view(
-    channel_id, message_ts, original_blocks, current_proposal
+    channel_id, message_ts, current_proposal
 ) -> dict:
     return {
         "type": "modal",
@@ -160,7 +160,7 @@ def create_manual_edit_view(
 
 # create the feedback action view
 def create_feedback_view(
-    channel_id, message_ts, original_blocks, proposal_text
+    channel_id, message_ts
 ) -> dict:
     return {
         "type": "modal",

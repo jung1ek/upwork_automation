@@ -56,12 +56,11 @@ async def slack_actions(payload: str = Form(...)):
                     inclusive=True,
                     limit=1,
                 )
-                original_blocks = result["messages"][0]["blocks"]
 
                 client.views_open(
                     trigger_id=payload_data["trigger_id"],
                     view=create_manual_edit_view(
-                        channel_id, message_ts, original_blocks, current_proposal
+                        channel_id, message_ts, current_proposal
                     ),
                 )
             except Exception as e:
@@ -71,17 +70,14 @@ async def slack_actions(payload: str = Form(...)):
         # feedback ai edit button
         elif action_id == "edit_ai":
             try:
-                proposal_text = action["value"]
 
                 channel_id = payload_data["channel"]["id"]
                 message_ts = payload_data["message"]["ts"]
 
-                original_blocks = payload_data["message"]["blocks"]
-
                 client.views_open(
                     trigger_id=payload_data["trigger_id"],
                     view=create_feedback_view(
-                        channel_id, message_ts, original_blocks, proposal_text
+                        channel_id, message_ts
                     ),
                 )
             except Exception as e:
@@ -174,7 +170,9 @@ async def slack_actions(payload: str = Form(...)):
     return JSONResponse(content={})
 
 
+# background threading method
 def process_in_background(client, channel_id, message_ts, feedback):
+    
     client.conversations_join(channel=channel_id)
     result = client.conversations_history(
         channel=channel_id,

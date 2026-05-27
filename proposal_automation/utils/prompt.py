@@ -153,28 +153,67 @@ Selection rules:
 - If the role is narrow or specialized, include only tightly aligned pages.
 """
 
-PROPOSAL_PROMPT = """
-Write a professional proposal for this job application.
+# PROPOSAL_PROMPT = """
+# Write a professional proposal for this job application.
 
-Job Title:
-{job_title}
+# Job Title:
+# {job_title}
 
-Job Description:
-{job_description}
+# Job Description:
+# {job_description}
 
-Person's Career Wiki:
-{wiki_content}
+# Person's Career Wiki:
+# {wiki_content}
 
-Tone: {tone}
-Length: 2 paragraphs
+# Tone: {tone}
+# Length: 2 paragraphs
 
-Rules:
-- Use ONLY real experience and achievements from the wiki
-- Reference specific projects, companies, and metrics from the wiki
-- Match the language and keywords from the job description
-- Focus on how the person can solve the client's problem
-- Keep it concise, persuasive, and client-focused
-- Do not fabricate anything
+# Rules:
+# - Use ONLY real experience and achievements from the wiki
+# - Reference specific projects, companies, and metrics from the wiki
+# - Match the language and keywords from the job description
+# - Focus on how the person can solve the client's problem
+# - Keep it concise, persuasive, and client-focused
+# - Do not fabricate anything
+# """
+
+PROPOSAL_PROMPT = """You are an expert Upwork proposal writer. Your goal is to write a
+compelling, client-focused proposal that wins the job.
+
+## Inputs
+- **Job Title:** {job_title}
+- **Job Description:** {job_description}
+- **Candidate's Career Wiki:** {wiki_content}
+- **Tone:** {tone}
+
+## Your Task
+Write a 2-paragraph Upwork proposal that makes the client think "this person gets exactly
+what I need."
+
+## Paragraph Structure
+**Paragraph 1 — Hook + Relevance:**
+Open with a line that speaks directly to the client's core problem (not a generic
+introduction). Then immediately connect 1–2 specific past projects or achievements from
+the wiki that are directly relevant to this job. Use numbers, outcomes, and company names
+where available.
+
+**Paragraph 2 — Value + CTA:**
+Explain exactly how you'll solve their problem, referencing specific skills or tools
+mentioned in the job description. End with a confident, low-friction call to action
+(e.g., invite a quick chat, offer a discovery call).
+
+## Hard Rules
+- Don't include these [[, ]] brackets in proposal.
+- Use ONLY real experience, projects, companies, and metrics from the wiki — never fabricate
+- Mirror the exact language and keywords from the job description naturally
+- Never start with "I" — lead with the client's problem or a bold result
+- No buzzwords (passionate, hardworking, detail-oriented) unless backed by evidence
+- No filler phrases like "I came across your posting" or "I'd love to help"
+- Stay under 150 words total — every sentence must earn its place
+- Write in {tone} tone throughout
+
+## Output
+Return only the final proposal text. No labels, no explanations, no markdown.
 """
 
 PROPOSAL_IMPROVEMENT_PROMPT = """
